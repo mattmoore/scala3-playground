@@ -1,0 +1,30 @@
+# This workflow will build the project and run tests.
+
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  setup-build-publish-deploy:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Cache sbt so it doesn't have to download for every run
+      - name: SBT Cache
+        uses: actions/cache@v1
+        env:
+          cache-name: sbt
+        with:
+          path: ~/.sbt
+          key: sbt
+
+      - name: Test
+        run: |
+          sbt test
